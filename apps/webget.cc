@@ -8,6 +8,14 @@ using namespace std;
 
 void get_URL(const string &host, const string &path) {
     // Your code here.
+    Address address(host, "http");
+    TCPSocket tcpSocket;
+    tcpSocket.connect(address);
+
+    tcpSocket.write("GET " + path + " HTTP/1.1\r\n");
+    tcpSocket.write("Host: " + host + "\r\n");
+    tcpSocket.write("Connection: close\r\n");
+    tcpSocket.write("\r\n");
 
     // You will need to connect to the "http" service on
     // the computer whose name is in the "host" string,
@@ -17,9 +25,27 @@ void get_URL(const string &host, const string &path) {
     // (not just one call to read() -- everything) until you reach
     // the "eof" (end of file).
 
-    cerr << "Function called: get_URL(" << host << ", " << path << ").\n";
-    cerr << "Warning: get_URL() has not been implemented yet.\n";
+    while(!tcpSocket.eof()) {
+        cout << tcpSocket.read();
+    }
+    tcpSocket.close();
+    // cerr << "Function called: get_URL(" << host << ", " << path << ").\n";
+    // cerr << "Warning: get_URL() has not been implemented yet.\n";
 }
+
+// void get_URL(const string &host, const string &path) {
+//     Address address(host, "http");
+//     TCPSocket tcp_socket;
+//     tcp_socket.connect(address);
+//     tcp_socket.write("GET " + path + " HTTP/1.1\r\n");
+//     tcp_socket.write("HOST: " + host + "\r\n");
+//     tcp_socket.write("Connection: close\r\n");
+//     tcp_socket.write("\r\n");
+//     while (!tcp_socket.eof()) {
+//       std::cout << tcp_socket.read();
+//     }
+//     tcp_socket.close();
+//   }
 
 int main(int argc, char *argv[]) {
     try {
